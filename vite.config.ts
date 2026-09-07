@@ -48,12 +48,15 @@ const fieldPwa = isFieldBuild
         // Registratie gebeurt uitsluitend via src/lib/pwa.ts (bewaakte wrapper).
         injectRegister: null,
         filename: "sw.js",
+        // De statische client-output staat in dist/client; daar moet sw.js ook staan.
+        outDir: "dist/client",
+        buildBase: "/",
         // Eigen manifest: public/manifest.field.json.
         manifest: false,
         devOptions: { enabled: false },
         workbox: {
           // Alleen wat de veld-app nodig heeft; zware marketingbeelden blijven eruit.
-          globPatterns: ["**/*.{js,css,woff2}", "**/icons/*.png"],
+          globPatterns: ["**/*.{js,css,woff2}", "icons/*.png"],
           navigateFallback: undefined,
           navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
           cleanupOutdatedCaches: true,
