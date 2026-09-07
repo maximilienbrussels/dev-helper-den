@@ -161,7 +161,7 @@ export function ImagePickerModal({
           <TabsContent value="storage" className="flex min-h-0 flex-1 flex-col data-[state=inactive]:hidden">
             <StorageBrowser
               canManage={canManage}
-              selectedKey={selected?.storage_key ?? null}
+              selectedKey={selected?.storageKey ?? null}
               onRegistered={(asset) => {
                 setJustRegistered(asset);
                 setSelectedId(asset.id);

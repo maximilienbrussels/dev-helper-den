@@ -43,6 +43,7 @@ export type MediaAsset = {
   description: string;
   altText: string;
   url: string;
+  storageKey: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -91,6 +92,7 @@ function toAsset(row: Row): MediaAsset {
     description: row.description ?? "",
     altText: row.alt_text ?? "",
     url: row.storage_url ? row.storage_url : `/api/public/media/${row.id}`,
+    storageKey: row.storage_key ?? null,
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
   };
