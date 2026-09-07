@@ -1,0 +1,41 @@
+# Project roadmap
+
+## In progress / done
+- [x] Vervang bliksem-emoji in AI-badge door Euria-logo; fix blauwe kader styling.
+- [x] Vervang alle "Ferme du Parc Maximilien"/"La Ferme du Parc Maximilien" door "Maxilien" over hele codebase (components, pages, meta, SEO, vertalingen, footer).
+- [x] Update footer copyright naar "© 2026 Maxilien. Alle rechten voorbehouden." (+ FR/EN) en behoud "Architectuur & Platform door Delplanche".
+
+## Chat & UI optimalisaties — afgewerkt
+- [ ] 1. AI-chat antwoordt altijd in de taal van de gebruiker (geen Engelse tussenzinnen bij NL).
+- [ ] 2. Adres overal exact "Schipperijkaai 2, 1000 Brussel" (AI-prompt, kaarten, locatiecomponenten).
+- [ ] 3. Geen blauwe tekstselectie/focus meer; huisstijl groen/aardetinten overal.
+- [ ] 4. Foto's in de chat klikbaar (fullscreen lightbox); kaarten/planningen groot te openen.
+- [ ] 5. Planning-generatie koppelen aan echte databank (reservaties, openingstijden) i.p.v. gokken.
+- [ ] 6. QR-code alleen op desktop; op mobiel enkel actieknop/scanner (6-teken code intern, geen extern secret).
+- [ ] 7. AI kan overzichten/codes/bevestigingen mailen via Brevo.
+- [x] Databankmigratie 0034 (afhaalcodes) uitgevoerd op live databank (ook 0036 certificaatcodes).
+
+### Status (deze ronde)
+- [x] Taalslot in de chat (antwoord volledig in de taal van de bezoeker)
+- [x] Adres hard vastgezet op Schipperijkaai 2, 1000 Brussel in de chatprompt
+- [x] Geen blauwe tekstselectie/focus meer: overal terracotta huisstijl
+- [x] Foto's in de chat en op de fotokaarten openen schermvullend
+- [x] Kaart/route kan in het groot geopend worden
+- [x] Planning gebruikt de echte agenda uit de databank (openingsuren, uitzonderingen, activiteiten)
+- [x] QR-code enkel op desktop, niet op mobiel
+- [x] E-mailknop bij overzichten: Maxim mailt de planning via Brevo
+- [x] Databankaanpassing 0034 (afhaalcodes) uitgevoerd
+- [x] Brevo-sleutel ingesteld
+
+## Nieuwe taken (import-sessie)
+- [ ] Werkende passkeys (WebAuthn) op profiel + login
+- [ ] "Verbonden Accounts" met live status per provider (Google, GitHub, Mastodon, Bluesky) + koppelen/ontkoppelen
+- [ ] Veilige e-mailwijziging met bevestigingslink via Brevo
+- [x] Ontbrekende API-sleutels/secrets opgevraagd en opgeslagen
+- [ ] Architectuur: intern UUID als enige sleutel, koppeltabel user_identities met subject-id per provider (incl. passkeys), e-mail als gewoon profielveld
+
+## Mobiele polish + audit (deze sessie)
+- [x] Statuswidget mobiel: korte tekst "Weekrooster →", geen tekstafbreking, hele widget klikbaar
+- [x] Zwevende Maxim-knop: meer ruimte onderaan/rechts + veilige zone, ligt boven paginablokken
+- [x] Code-audit beheerportaal: CRUD (diensten, prijzen, producten, slots, zalen), orderstatussen, rechtencontrole per beheerfunctie, mobiele tabellen/kaarten — geen blauwe stijlen gevonden
+- [ ] Live functionele test van het beheerportaal (echt opslaan in de databank) — wacht op DATABASE_URL in deze omgeving
