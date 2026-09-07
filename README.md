@@ -22,3 +22,23 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Drie omgevingen, één codebasis
+
+| Bouw | Commando | Domein |
+| --- | --- | --- |
+| Publieke site | `VITE_APP_MODE=public bun run build` | maximilien.brussels |
+| Beheer (desktop) | `VITE_APP_MODE=admin bun run build` | maximilien.site |
+| Veld-app (PWA) | `VITE_APP_MODE=field bun run build` | maximilien.app |
+
+Alle drie gebruiken dezelfde Neon-databank en dezelfde aanmeldsleutels. Neem de
+drie domeinen op in `OAUTH_ALLOWED_ORIGINS`, `PUBLIC_SITE_ORIGIN` en de
+CORS-oorsprongen van de S3-bucket, anders vallen sessies of uploads weg.
+
+Zonder `VITE_APP_MODE` (lokaal/preview) beslist de hostname, met `?mode=public`,
+`?mode=admin` of `?mode=field` als handmatige schakelaar.
+
+De veld-app draait op `/veld` (Vandaag, Aanvragen, Scanner, Diensten, Meer),
+is installeerbaar via `public/manifest.field.json` en heeft offline-caching.
+De service worker registreert enkel in een echte productiebouw — nooit in dev,
+in een iframe of in de Lovable-voorvertoning; `?sw=off` schakelt hem uit.

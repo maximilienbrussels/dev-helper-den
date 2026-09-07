@@ -1,4 +1,4 @@
-import { Shield, Store } from "lucide-react";
+import { Shield, Smartphone, Store } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { setAppModeOverride, type AppMode } from "@/lib/app-mode";
@@ -11,6 +11,7 @@ export default function DevModeToggle({ mode }: { mode: AppMode }) {
   const options: { value: AppMode; label: string; Icon: typeof Store }[] = [
     { value: "public", label: "Publiek", Icon: Store },
     { value: "admin", label: "Admin", Icon: Shield },
+    { value: "field", label: "Veld", Icon: Smartphone },
   ];
 
   return (

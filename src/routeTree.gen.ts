@@ -31,6 +31,7 @@ import { Route as SocialRouteImport } from './routes/social'
 import { Route as StempelVariantenRouteImport } from './routes/stempel-varianten'
 import { Route as SteunRouteImport } from './routes/steun'
 import { Route as VakantiestagesRouteImport } from './routes/vakantiestages'
+import { Route as VeldRouteImport } from './routes/veld'
 import { Route as VerhuurRouteImport } from './routes/verhuur'
 import { Route as VoorwaardenRouteImport } from './routes/voorwaarden'
 import { Route as WachtwoordHerstellenRouteImport } from './routes/wachtwoord-herstellen'
@@ -68,6 +69,11 @@ import { Route as CertificaatIdRouteImport } from './routes/certificaat.$id'
 import { Route as InformatieOnderwerpRouteImport } from './routes/informatie.$onderwerp'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as QrAnimalIdRouteImport } from './routes/qr.$animalId'
+import { Route as VeldIndexRouteImport } from './routes/veld.index'
+import { Route as VeldAanvragenRouteImport } from './routes/veld.aanvragen'
+import { Route as VeldDienstenRouteImport } from './routes/veld.diensten'
+import { Route as VeldMeerRouteImport } from './routes/veld.meer'
+import { Route as VeldScannerRouteImport } from './routes/veld.scanner'
 import { Route as VerifieerIndexRouteImport } from './routes/verifieer.index'
 import { Route as VerifieerCodeRouteImport } from './routes/verifieer.$code'
 import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
@@ -247,6 +253,11 @@ const SteunRoute = SteunRouteImport.update({
 const VakantiestagesRoute = VakantiestagesRouteImport.update({
   id: '/vakantiestages',
   path: '/vakantiestages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VeldRoute = VeldRouteImport.update({
+  id: '/veld',
+  path: '/veld',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VerhuurRoute = VerhuurRouteImport.update({
@@ -435,6 +446,31 @@ const QrAnimalIdRoute = QrAnimalIdRouteImport.update({
   id: '/qr/$animalId',
   path: '/qr/$animalId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const VeldIndexRoute = VeldIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VeldRoute,
+} as any)
+const VeldAanvragenRoute = VeldAanvragenRouteImport.update({
+  id: '/aanvragen',
+  path: '/aanvragen',
+  getParentRoute: () => VeldRoute,
+} as any)
+const VeldDienstenRoute = VeldDienstenRouteImport.update({
+  id: '/diensten',
+  path: '/diensten',
+  getParentRoute: () => VeldRoute,
+} as any)
+const VeldMeerRoute = VeldMeerRouteImport.update({
+  id: '/meer',
+  path: '/meer',
+  getParentRoute: () => VeldRoute,
+} as any)
+const VeldScannerRoute = VeldScannerRouteImport.update({
+  id: '/scanner',
+  path: '/scanner',
+  getParentRoute: () => VeldRoute,
 } as any)
 const VerifieerIndexRoute = VerifieerIndexRouteImport.update({
   id: '/verifieer/',
@@ -826,6 +862,7 @@ export interface FileRoutesByFullPath {
   '/stempel-varianten': typeof StempelVariantenRoute
   '/steun': typeof SteunRoute
   '/vakantiestages': typeof VakantiestagesRoute
+  '/veld': typeof VeldRouteWithChildren
   '/verhuur': typeof VerhuurRoute
   '/voorwaarden': typeof VoorwaardenRoute
   '/wachtwoord-herstellen': typeof WachtwoordHerstellenRoute
@@ -859,6 +896,10 @@ export interface FileRoutesByFullPath {
   '/informatie/$onderwerp': typeof InformatieOnderwerpRoute
   '/product/$slug': typeof ProductSlugRoute
   '/qr/$animalId': typeof QrAnimalIdRoute
+  '/veld/aanvragen': typeof VeldAanvragenRoute
+  '/veld/diensten': typeof VeldDienstenRoute
+  '/veld/meer': typeof VeldMeerRoute
+  '/veld/scanner': typeof VeldScannerRoute
   '/verifieer/$code': typeof VerifieerCodeRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/webshop/bedankt': typeof WebshopBedanktRoute
@@ -868,6 +909,7 @@ export interface FileRoutesByFullPath {
   '/academy/': typeof AcademyIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/boeking/': typeof BoekingIndexRoute
+  '/veld/': typeof VeldIndexRoute
   '/verifieer/': typeof VerifieerIndexRoute
   '/webshop/': typeof WebshopIndexRoute
   '/word-partner/': typeof WordPartnerIndexRoute
@@ -988,6 +1030,10 @@ export interface FileRoutesByTo {
   '/informatie/$onderwerp': typeof InformatieOnderwerpRoute
   '/product/$slug': typeof ProductSlugRoute
   '/qr/$animalId': typeof QrAnimalIdRoute
+  '/veld/aanvragen': typeof VeldAanvragenRoute
+  '/veld/diensten': typeof VeldDienstenRoute
+  '/veld/meer': typeof VeldMeerRoute
+  '/veld/scanner': typeof VeldScannerRoute
   '/verifieer/$code': typeof VerifieerCodeRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/webshop/bedankt': typeof WebshopBedanktRoute
@@ -997,6 +1043,7 @@ export interface FileRoutesByTo {
   '/academy': typeof AcademyIndexRoute
   '/auth': typeof AuthIndexRoute
   '/boeking': typeof BoekingIndexRoute
+  '/veld': typeof VeldIndexRoute
   '/verifieer': typeof VerifieerIndexRoute
   '/webshop': typeof WebshopIndexRoute
   '/word-partner': typeof WordPartnerIndexRoute
@@ -1088,6 +1135,7 @@ export interface FileRoutesById {
   '/stempel-varianten': typeof StempelVariantenRoute
   '/steun': typeof SteunRoute
   '/vakantiestages': typeof VakantiestagesRoute
+  '/veld': typeof VeldRouteWithChildren
   '/verhuur': typeof VerhuurRoute
   '/voorwaarden': typeof VoorwaardenRoute
   '/wachtwoord-herstellen': typeof WachtwoordHerstellenRoute
@@ -1121,6 +1169,10 @@ export interface FileRoutesById {
   '/informatie/$onderwerp': typeof InformatieOnderwerpRoute
   '/product/$slug': typeof ProductSlugRoute
   '/qr/$animalId': typeof QrAnimalIdRoute
+  '/veld/aanvragen': typeof VeldAanvragenRoute
+  '/veld/diensten': typeof VeldDienstenRoute
+  '/veld/meer': typeof VeldMeerRoute
+  '/veld/scanner': typeof VeldScannerRoute
   '/verifieer/$code': typeof VerifieerCodeRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/webshop/bedankt': typeof WebshopBedanktRoute
@@ -1130,6 +1182,7 @@ export interface FileRoutesById {
   '/academy/': typeof AcademyIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/boeking/': typeof BoekingIndexRoute
+  '/veld/': typeof VeldIndexRoute
   '/verifieer/': typeof VerifieerIndexRoute
   '/webshop/': typeof WebshopIndexRoute
   '/word-partner/': typeof WordPartnerIndexRoute
@@ -1221,6 +1274,7 @@ export interface FileRouteTypes {
     | '/stempel-varianten'
     | '/steun'
     | '/vakantiestages'
+    | '/veld'
     | '/verhuur'
     | '/voorwaarden'
     | '/wachtwoord-herstellen'
@@ -1254,6 +1308,10 @@ export interface FileRouteTypes {
     | '/informatie/$onderwerp'
     | '/product/$slug'
     | '/qr/$animalId'
+    | '/veld/aanvragen'
+    | '/veld/diensten'
+    | '/veld/meer'
+    | '/veld/scanner'
     | '/verifieer/$code'
     | '/verify/$code'
     | '/webshop/bedankt'
@@ -1263,6 +1321,7 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/auth/'
     | '/boeking/'
+    | '/veld/'
     | '/verifieer/'
     | '/webshop/'
     | '/word-partner/'
@@ -1383,6 +1442,10 @@ export interface FileRouteTypes {
     | '/informatie/$onderwerp'
     | '/product/$slug'
     | '/qr/$animalId'
+    | '/veld/aanvragen'
+    | '/veld/diensten'
+    | '/veld/meer'
+    | '/veld/scanner'
     | '/verifieer/$code'
     | '/verify/$code'
     | '/webshop/bedankt'
@@ -1392,6 +1455,7 @@ export interface FileRouteTypes {
     | '/academy'
     | '/auth'
     | '/boeking'
+    | '/veld'
     | '/verifieer'
     | '/webshop'
     | '/word-partner'
@@ -1482,6 +1546,7 @@ export interface FileRouteTypes {
     | '/stempel-varianten'
     | '/steun'
     | '/vakantiestages'
+    | '/veld'
     | '/verhuur'
     | '/voorwaarden'
     | '/wachtwoord-herstellen'
@@ -1515,6 +1580,10 @@ export interface FileRouteTypes {
     | '/informatie/$onderwerp'
     | '/product/$slug'
     | '/qr/$animalId'
+    | '/veld/aanvragen'
+    | '/veld/diensten'
+    | '/veld/meer'
+    | '/veld/scanner'
     | '/verifieer/$code'
     | '/verify/$code'
     | '/webshop/bedankt'
@@ -1524,6 +1593,7 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/auth/'
     | '/boeking/'
+    | '/veld/'
     | '/verifieer/'
     | '/webshop/'
     | '/word-partner/'
@@ -1615,6 +1685,7 @@ export interface RootRouteChildren {
   StempelVariantenRoute: typeof StempelVariantenRoute
   SteunRoute: typeof SteunRoute
   VakantiestagesRoute: typeof VakantiestagesRoute
+  VeldRoute: typeof VeldRouteWithChildren
   VerhuurRoute: typeof VerhuurRoute
   VoorwaardenRoute: typeof VoorwaardenRoute
   WachtwoordHerstellenRoute: typeof WachtwoordHerstellenRoute
@@ -1860,6 +1931,13 @@ declare module '@tanstack/react-router' {
       path: '/vakantiestages'
       fullPath: '/vakantiestages'
       preLoaderRoute: typeof VakantiestagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/veld': {
+      id: '/veld'
+      path: '/veld'
+      fullPath: '/veld'
+      preLoaderRoute: typeof VeldRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verhuur': {
@@ -2120,6 +2198,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/qr/$animalId'
       preLoaderRoute: typeof QrAnimalIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/veld/': {
+      id: '/veld/'
+      path: '/'
+      fullPath: '/veld/'
+      preLoaderRoute: typeof VeldIndexRouteImport
+      parentRoute: typeof VeldRoute
+    }
+    '/veld/aanvragen': {
+      id: '/veld/aanvragen'
+      path: '/aanvragen'
+      fullPath: '/veld/aanvragen'
+      preLoaderRoute: typeof VeldAanvragenRouteImport
+      parentRoute: typeof VeldRoute
+    }
+    '/veld/diensten': {
+      id: '/veld/diensten'
+      path: '/diensten'
+      fullPath: '/veld/diensten'
+      preLoaderRoute: typeof VeldDienstenRouteImport
+      parentRoute: typeof VeldRoute
+    }
+    '/veld/meer': {
+      id: '/veld/meer'
+      path: '/meer'
+      fullPath: '/veld/meer'
+      preLoaderRoute: typeof VeldMeerRouteImport
+      parentRoute: typeof VeldRoute
+    }
+    '/veld/scanner': {
+      id: '/veld/scanner'
+      path: '/scanner'
+      fullPath: '/veld/scanner'
+      preLoaderRoute: typeof VeldScannerRouteImport
+      parentRoute: typeof VeldRoute
     }
     '/verifieer/': {
       id: '/verifieer/'
@@ -2676,6 +2789,24 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface VeldRouteChildren {
+  VeldAanvragenRoute: typeof VeldAanvragenRoute
+  VeldDienstenRoute: typeof VeldDienstenRoute
+  VeldMeerRoute: typeof VeldMeerRoute
+  VeldScannerRoute: typeof VeldScannerRoute
+  VeldIndexRoute: typeof VeldIndexRoute
+}
+
+const VeldRouteChildren: VeldRouteChildren = {
+  VeldAanvragenRoute: VeldAanvragenRoute,
+  VeldDienstenRoute: VeldDienstenRoute,
+  VeldMeerRoute: VeldMeerRoute,
+  VeldScannerRoute: VeldScannerRoute,
+  VeldIndexRoute: VeldIndexRoute,
+}
+
+const VeldRouteWithChildren = VeldRoute._addFileChildren(VeldRouteChildren)
+
 interface ApiChatRouteChildren {
   ApiChatEmailRoute: typeof ApiChatEmailRoute
 }
@@ -2746,6 +2877,7 @@ const rootRouteChildren: RootRouteChildren = {
   StempelVariantenRoute: StempelVariantenRoute,
   SteunRoute: SteunRoute,
   VakantiestagesRoute: VakantiestagesRoute,
+  VeldRoute: VeldRouteWithChildren,
   VerhuurRoute: VerhuurRoute,
   VoorwaardenRoute: VoorwaardenRoute,
   WachtwoordHerstellenRoute: WachtwoordHerstellenRoute,

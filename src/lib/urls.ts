@@ -12,6 +12,7 @@ import { getEnvAppMode, type AppMode } from "./app-mode";
 
 export const PUBLIC_ORIGIN = "https://maximilien.brussels";
 export const ADMIN_ORIGIN = "https://maximilien.site";
+export const FIELD_ORIGIN = "https://maximilien.app";
 
 function normalizePath(path: string): string {
   if (!path) return "/";
@@ -38,7 +39,9 @@ function buildUrl(target: AppMode, path: string): string {
   if (!envMode && import.meta.env.DEV) return withModeParam(normalized, target);
 
   // Productie (met of zonder VITE_APP_MODE): altijd het juiste domein.
-  return `${target === "admin" ? ADMIN_ORIGIN : PUBLIC_ORIGIN}${normalized}`;
+  const origin =
+    target === "admin" ? ADMIN_ORIGIN : target === "field" ? FIELD_ORIGIN : PUBLIC_ORIGIN;
+  return `${origin}${normalized}`;
 }
 
 /** URL naar de publieke bezoekerssite (maximilien.brussels). */
@@ -49,6 +52,11 @@ export function getPublicUrl(path = "/"): string {
 /** URL naar het admin-portaal (maximilien.site). */
 export function getAdminUrl(path = "/"): string {
   return buildUrl("admin", path);
+}
+
+/** URL naar de veld-app (maximilien.app). */
+export function getFieldUrl(path = "/veld"): string {
+  return buildUrl("field", path);
 }
 
 /** True wanneer de link het huidige domein verlaat (voor target="_blank" / rel). */
