@@ -23,13 +23,18 @@ function Status({ ok, label }: { ok: boolean | null; label: string }) {
   );
 }
 
-export function MyAccessCard() {
+/** Gedeelde query, zodat andere kaarten dezelfde gegevens kunnen tonen. */
+export function useMyAccess() {
   const fetchAccess = useServerFn(getMyAccess);
-  const access = useQuery<AccessDiagnostics>({
+  return useQuery<AccessDiagnostics>({
     queryKey: MY_ACCESS_QUERY_KEY,
     queryFn: () => fetchAccess(),
     staleTime: 30_000,
   });
+}
+
+export function MyAccessCard() {
+  const access = useMyAccess();
 
   const d = access.data;
 
