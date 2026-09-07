@@ -39,3 +39,14 @@
 - [x] Zwevende Maxim-knop: meer ruimte onderaan/rechts + veilige zone, ligt boven paginablokken
 - [x] Code-audit beheerportaal: CRUD (diensten, prijzen, producten, slots, zalen), orderstatussen, rechtencontrole per beheerfunctie, mobiele tabellen/kaarten — geen blauwe stijlen gevonden
 - [ ] Live functionele test van het beheerportaal (echt opslaan in de databank) — wacht op DATABASE_URL in deze omgeving
+
+## Beheerportaal — toegang & media (deze sessie)
+- [x] Rechtencontrole centraal: eigenaar / Eigenaar / super_admin krijgen overal volle toegang (permission-core.server.ts)
+- [x] API-routes geven 401 bij niet-aangemeld, 403 enkel bij echt geweigerd, 500 bij fout — geen valse "Je hebt geen rechten" meer
+- [x] Kaart "Mijn toegang" op de instellingenpagina (e-mail, rollen, rechten, opslag, databank, e-maildienst)
+- [x] Opslagknop toont nu meteen of de uploadrechten al goed staan
+- [x] Tabblad "Opslag" in de mediakiezer: bestaande Scaleway-bestanden tonen + registreren
+- [x] "Verwijder afbeelding" bij de webshop-banner
+- [x] Sweep beeldvelden (team, sociale posts, pagina's, academie, producten): voorbeeld + vervangen + verwijderen aanwezig
+- [x] Typecheck en tests groen
+- [ ] Live test met eigenaarsaccount — wacht op DATABASE_URL en Scaleway-sleutels in deze omgeving
