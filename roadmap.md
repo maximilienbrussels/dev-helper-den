@@ -50,3 +50,11 @@
 - [x] Sweep beeldvelden (team, sociale posts, pagina's, academie, producten): voorbeeld + vervangen + verwijderen aanwezig
 - [x] Typecheck en tests groen
 - [ ] Live test met eigenaarsaccount — wacht op DATABASE_URL en Scaleway-sleutels in deze omgeving
+
+## Drie omgevingen (afgerond)
+- [x] Derde modus "field" in app-mode + hostname maximilien.app + `?mode=field`
+- [x] Veld-app op /veld: Vandaag, Aanvragen, Scanner, Diensten, Meer + onderbalk
+- [x] PWA: eigen manifest, iconen, offline-caching via bewaakte service worker
+- [x] Aparte builds via VITE_APP_MODE (public | admin | field), gedocumenteerd in README
+- [ ] Passkeys + Google/GitHub/Mastodon/Bluesky (aparte ronde)
+- [ ] Live test met eigenaarsaccount zodra databank- en opslagsleutels beschikbaar zijn

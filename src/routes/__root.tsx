@@ -20,20 +20,23 @@ import { getAuthClient } from "../lib/auth-client";
 import { AppErrorFallback } from "../components/AppErrorFallback";
 import { installGlobalErrorLogging } from "../lib/lovable-error-reporting";
 import {
+  getEnvAppMode,
   getServerAppMode,
   isAdminPath,
   isAppModeSwitchable,
+  isFieldPath,
   resolveAppMode,
   type AppMode,
 } from "../lib/app-mode";
 import { getRequestAppMode } from "../lib/app-mode.request";
 
 /**
- * Twee gescheiden bundels: de publieke bezoekerssite en het admin-portaal.
- * React.lazy zorgt dat alleen de shell van de actieve modus geladen wordt.
+ * Drie gescheiden bundels: de publieke bezoekerssite, het beheerportaal en de
+ * veld-app (PWA). React.lazy zorgt dat alleen de shell van de actieve modus laadt.
  */
 const PublicAppShell = lazy(() => import("../components/shells/PublicAppShell"));
 const AdminAppShell = lazy(() => import("../components/shells/AdminAppShell"));
+const FieldAppShell = lazy(() => import("../components/shells/FieldAppShell"));
 const DevModeToggle = lazy(() => import("../components/DevModeToggle"));
 
 
@@ -101,6 +104,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     if (appMode === "admin" && !isAdminPath(location.pathname)) {
       throw redirect({ to: "/auth", replace: true });
     }
+    if (appMode === "field" && !isFieldPath(location.pathname)) {
+      throw redirect({ to: "/veld", replace: true });
+    }
     return { appMode };
   },
   head: () => ({
@@ -116,7 +122,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { name: "apple-mobile-web-app-title", content: "Maximiliaan" },
+      {
+        name: "apple-mobile-web-app-title",
+        content: getEnvAppMode() === "field" ? "Maximilien Veld" : "Maximiliaan",
+      },
 
       { title: "La Ferme du parc Maximilien — Stadsboerderij Brussel" },
 
@@ -152,8 +161,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       // stylesheet wordt via de bundle geladen (zie import bovenaan)
       { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
-      { rel: "manifest", href: "/manifest.json" },
+      {
+        rel: "apple-touch-icon",
+        href: getEnvAppMode() === "field" ? "/icons/field-192.png" : "/icons/apple-touch-icon.png",
+      },
+      // Veld-build (maximilien.app) krijgt zijn eigen app-omslag.
+      {
+        rel: "manifest",
+        href: getEnvAppMode() === "field" ? "/manifest.field.json" : "/manifest.json",
+      },
 
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -206,7 +222,7 @@ function RootComponent() {
   useEffect(() => {
     const resolved = resolveAppMode();
     // Hostname/env winnen altijd van een oude localStorage-override.
-    setMode(appMode === "admin" ? "admin" : resolved);
+    setMode(appMode === "admin" || appMode === "field" ? appMode : resolved);
     setShowDevToggle(isAppModeSwitchable());
   }, [appMode]);
 
@@ -227,7 +243,7 @@ function RootComponent() {
     return () => unsubscribe?.();
   }, [queryClient]);
 
-  const Shell = mode === "admin" ? AdminAppShell : PublicAppShell;
+  const Shell = mode === "field" ? FieldAppShell : mode === "admin" ? AdminAppShell : PublicAppShell;
 
   return (
     <QueryClientProvider client={queryClient}>

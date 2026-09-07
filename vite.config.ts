@@ -5,6 +5,7 @@
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { VitePWA } from "vite-plugin-pwa";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -36,13 +37,64 @@ const neonAuthGlobalScopeFix = {
   },
 };
 
+// Offline-ondersteuning enkel in de veld-build (maximilien.app).
+const isFieldBuild = process.env["VITE_APP_MODE"] === "field";
+
+const fieldPwa = isFieldBuild
+  ? [
+      VitePWA({
+        strategies: "generateSW",
+        registerType: "autoUpdate",
+        // Registratie gebeurt uitsluitend via src/lib/pwa.ts (bewaakte wrapper).
+        injectRegister: null,
+        filename: "sw.js",
+        // De statische client-output staat in dist/client; daar moet sw.js ook staan.
+        outDir: "dist/client",
+        buildBase: "/",
+        // Eigen manifest: public/manifest.field.json.
+        manifest: false,
+        devOptions: { enabled: false },
+        workbox: {
+          // Alleen wat de veld-app nodig heeft; zware marketingbeelden blijven eruit.
+          globPatterns: ["**/*.{js,css,woff2}", "icons/*.png"],
+          navigateFallback: undefined,
+          navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true,
+          runtimeCaching: [
+            {
+              urlPattern: ({ request, url }: { request: Request; url: URL }) =>
+                request.mode === "navigate" && !url.pathname.startsWith("/~oauth"),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "veld-paginas",
+                networkTimeoutSeconds: 4,
+                expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 7 },
+              },
+            },
+            {
+              urlPattern: ({ sameOrigin, request }: { sameOrigin: boolean; request: Request }) =>
+                sameOrigin && ["style", "script", "font", "image"].includes(request.destination),
+              handler: "CacheFirst",
+              options: {
+                cacheName: "veld-bestanden",
+                expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              },
+            },
+          ],
+        },
+      }),
+    ]
+  : [];
+
 export default defineConfig({
   vite: {
-    plugins: [neonAuthGlobalScopeFix],
+    plugins: [neonAuthGlobalScopeFix, ...fieldPwa],
 
     // Eigen domeinen mogen de dev-server aanspreken (lokale hosts-mapping om
     // de domeinscheiding admin/publiek te testen).
-    server: { allowedHosts: ["maximilien.site", "maximilien.brussels"] },
+    server: { allowedHosts: ["maximilien.site", "maximilien.brussels", "maximilien.app"] },
 
     // Serverless functies hebben geen node_modules-resolutie op runtime: alles
     // moet in de bundel zitten, anders faalt de deploy met o.a.
