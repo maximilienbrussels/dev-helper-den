@@ -36,6 +36,7 @@ import { SocialMediaManager } from "@/components/admin/SocialMediaManager";
 import { ChatSettings } from "@/components/admin/ChatSettings";
 import { PaymentSettings } from "@/components/admin/PaymentSettings";
 import { S3CorsSection } from "./S3CorsSection";
+import { MyAccessCard, useMyAccess } from "./MyAccessCard";
 import {
   DEFAULT_SITE_CONFIG,
   FEATURE_LABELS,
@@ -140,6 +141,7 @@ export function SitePage() {
     queryFn: () => fetchSiteConfig(),
   });
   const config: SiteConfig = data ?? DEFAULT_SITE_CONFIG;
+  const myAccess = useMyAccess();
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["site-config"] });
   const onError = (e: unknown) =>
@@ -230,7 +232,9 @@ export function SitePage() {
         <PaymentSettings payments={config.payments} />
       </Section>
 
-      <S3CorsSection />
+      <MyAccessCard />
+
+      <S3CorsSection status={myAccess.data?.storage ?? null} />
 
       <div className="rounded-xl border border-dashed border-primary/40 bg-primary/5 p-4 text-sm">
         💡 Prijzen, verhuur- en servicetarieven beheren? Ga naar{" "}
