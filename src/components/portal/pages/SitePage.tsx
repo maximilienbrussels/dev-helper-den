@@ -141,6 +141,7 @@ export function SitePage() {
     queryFn: () => fetchSiteConfig(),
   });
   const config: SiteConfig = data ?? DEFAULT_SITE_CONFIG;
+  const myAccess = useMyAccess();
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["site-config"] });
   const onError = (e: unknown) =>
