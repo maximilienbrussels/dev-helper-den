@@ -219,9 +219,9 @@ export function PortalProvider({
     try {
       await action();
     } catch (e) {
+      // De toast komt al uit onError van de mutatie; hier enkel de kaart markeren.
       const message = e instanceof Error ? e.message : translate("common.error", lang);
       setBookingErrors((prev) => ({ ...prev, [id]: message }));
-      toast.error(message);
     } finally {
       setBusyBookings((prev) => {
         const next = { ...prev };
